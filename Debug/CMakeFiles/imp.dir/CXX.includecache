@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/cosmina/Downloads/utcn-imp/lexer.cpp
+sstream
+-
+lexer.h
+/home/cosmina/Downloads/utcn-imp/lexer.h
+
+/home/cosmina/Downloads/utcn-imp/lexer.h
+cassert
+-
+fstream
+-
+iostream
+-
+stdexcept
+-
+

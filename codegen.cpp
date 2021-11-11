@@ -91,7 +91,7 @@ std::unique_ptr<Program> Codegen::Translate(const Module &mod)
     }
     LowerStmt(global, *std::get<2>(item));
   }
-  Emit<Opcode>(Opcode::STOP);
+  Emit<>(Opcode::STOP);
 
   // Emit code for all functions.
   for (auto item : mod) {
@@ -177,6 +177,9 @@ void Codegen::LowerExpr(const Scope &scope, const Expr &expr)
     case Expr::Kind::CALL: {
       return LowerCallExpr(scope, static_cast<const CallExpr &>(expr));
     }
+    case Expr::Kind::INT: {
+    	return LowerIntExpr(scope, static_cast<const IntExpr &>(expr));
+    }//////////?????????
   }
 }
 
@@ -200,6 +203,17 @@ void Codegen::LowerRefExpr(const Scope &scope, const RefExpr &expr)
   }
 }
 
+////////////////////////-------------------------??????
+void Codegen::LowerIntExpr(const Scope &scope, const IntExpr &expr)
+{
+	EmitPushInt(int64_t(expr.GetNumber()));
+	return;
+}
+
+
+
+//////////////////////----------------------------????
+
 // -----------------------------------------------------------------------------
 void Codegen::LowerBinaryExpr(const Scope &scope, const BinaryExpr &binary)
 {
@@ -208,6 +222,9 @@ void Codegen::LowerBinaryExpr(const Scope &scope, const BinaryExpr &binary)
   switch (binary.GetKind()) {
     case BinaryExpr::Kind::ADD: {
       return EmitAdd();
+    }
+    case BinaryExpr::Kind::SUB: {
+      return EmitSub();
     }
   }
 }
@@ -341,6 +358,14 @@ void Codegen::EmitAdd()
 }
 
 // -----------------------------------------------------------------------------
+void Codegen::EmitSub()
+{
+  assert(depth_ > 0 && "no elements on stack");
+  depth_ -= 1;
+  Emit<Opcode>(Opcode::SUB);
+}
+
+// -----------------------------------------------------------------------------
 void Codegen::EmitJumpFalse(Label label)
 {
   assert(depth_ > 0 && "no elements on stack");
@@ -355,3 +380,12 @@ void Codegen::EmitJump(Label label)
   Emit<Opcode>(Opcode::JUMP);
   EmitFixup(label);
 }
+
+//////////////////////------------????
+void Codegen::EmitPushInt(int64_t nb)
+{
+	depth_ +=1;
+	Emit<Opcode>(Opcode::PUSH_INT);
+	Emit<int64_t>(nb);
+}
+////////////////////-----------------???
