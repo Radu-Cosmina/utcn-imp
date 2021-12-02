@@ -181,17 +181,20 @@ std::shared_ptr<Expr> Parser::ParseCallExpr()
 // -----------------------------------------------------------------------------
 std::shared_ptr<Expr> Parser::ParseAddSubExpr()
 {
-  std::shared_ptr<Expr> term = ParseCallExpr();
+  //std::shared_ptr<Expr> term = ParseCallExpr();
+  std::shared_ptr<Expr> term = ParseMulDivModExpr();//mul, div and mod have greater precedence than sub and add
+  /////L2////????
   while ((Current().Is(Token::Kind::PLUS)) ){
     lexer_.Next();
-    auto rhs = ParseCallExpr();
-    
+    //auto rhs = ParseCallExpr();<--for lab1
+    auto rhs = ParseMulDivModExpr();
     term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::ADD, term, rhs); 
     
   }
    while ((Current().Is(Token::Kind::MINUS)) ){
     lexer_.Next();
-    auto rhs = ParseCallExpr();
+    //auto rhs = ParseCallExpr();<--for lab1
+    auto rhs = ParseMulDivModExpr();
     
     term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::SUB, term, rhs); 
     ////////////???????
@@ -200,7 +203,45 @@ std::shared_ptr<Expr> Parser::ParseAddSubExpr()
   
   return term;
 }
+// -----------------------------------------------------------------------------
+std::shared_ptr<Expr> Parser::ParseMulDivModExpr()
+{
+  std::shared_ptr<Expr> term = ParseCallExpr();
+  while ((Current().Is(Token::Kind::MUL))){
+    lexer_.Next();
+    auto rhs = ParseCallExpr();   
+    term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::MUL, term, rhs);     
+  }
+   while (((Current().Is(Token::Kind::DIV))) ){
+    lexer_.Next();
+    auto rhs = ParseCallExpr();
+    
+    term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::DIV, term, rhs); 
+  }
+  while (((Current().Is(Token::Kind:: MOD))) ){
+    lexer_.Next();
+    auto rhs = ParseCallExpr();
+    
+    term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::MOD, term, rhs); 
+    
+  }
+  return term;
+}//////L2//////???????
 
+// -----------------------------------------------------------------------------
+std::shared_ptr<Expr> Parser::ParseDoubleEqualExpr()
+{
+  std::shared_ptr<Expr> term = ParseAddSubExpr();//add and sub have a greater precedence than ==
+  while (Current().Is(Token::Kind::D_EQUAL))
+  {
+    lexer_.Next();
+    auto rhs = ParseAddSubExpr();
+    term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::D_EQUAL, term, rhs);
+  }
+  
+  return term;
+}
+/////L2////????
 
 // -----------------------------------------------------------------------------
 const Token &Parser::Expect(Token::Kind kind)

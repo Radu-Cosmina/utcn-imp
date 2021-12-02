@@ -226,6 +226,18 @@ void Codegen::LowerBinaryExpr(const Scope &scope, const BinaryExpr &binary)
     case BinaryExpr::Kind::SUB: {
       return EmitSub();
     }
+    case BinaryExpr::Kind::MUL: {
+      return EmitMul();
+    }////L2///?????
+    case BinaryExpr::Kind::DIV:{
+      return EmitDiv();
+    }////L2///?????
+    case BinaryExpr::Kind::MOD:{
+      return EmitMod();
+    }////L2///?????
+    case BinaryExpr::Kind::D_EQUAL:{
+      return EmitD_Equal();
+    }////L2///?????
   }
 }
 
@@ -364,6 +376,38 @@ void Codegen::EmitSub()
   depth_ -= 1;
   Emit<Opcode>(Opcode::SUB);
 }
+///------------------------
+void Codegen::EmitMul()
+{
+  assert(depth_ > 0 && "no elements on stack");
+  depth_ -= 1;
+  Emit<Opcode>(Opcode::MUL);
+}
+////----------------//////L2///??????
+///------------------------
+void Codegen::EmitDiv()
+{
+  assert(depth_ > 0 && "no elements on stack");
+  depth_ -= 1;
+  Emit<Opcode>(Opcode::DIV);
+}
+////----------------//////L2///??????
+///------------------------
+void Codegen::EmitMod()
+{
+  assert(depth_ > 0 && "no elements on stack");
+  depth_ -= 1;
+  Emit<Opcode>(Opcode::MOD);
+}
+////----------------//////L2///??????
+///------------------------
+void Codegen::EmitD_Equal()
+{
+  assert(depth_ > 0 && "no elements on stack");
+  depth_ -= 1;
+  Emit<Opcode>(Opcode::D_EQUAL);
+}
+////----------------//////L2///??????
 
 // -----------------------------------------------------------------------------
 void Codegen::EmitJumpFalse(Label label)

@@ -153,6 +153,14 @@ private:
   void EmitAdd();
   /// Emit an sub opcode.
   void EmitSub();
+   /// Emit an mul opcode.////L2/////????
+  void EmitMul();
+   /// Emit an div opcode.////L2/////????
+  void EmitDiv();
+   /// Emit an mod opcode.////L2/////????
+  void EmitMod();
+   /// Emit an double equal opcode.////L2/////????
+  void EmitD_Equal();
   /// Emit a label.
   void EmitLabel(Label label);
   /// Emit a conditional jump.

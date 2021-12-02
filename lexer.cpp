@@ -138,6 +138,10 @@ std::ostream &operator<<(std::ostream &os, const Token::Kind kind)
     case Token::Kind::COMMA: return os << ",";
     case Token::Kind::PLUS: return os << "+";
     case Token::Kind::MINUS: return os << "-";
+    case Token::Kind::MUL: return os << "*";/////L2///????
+    case Token::Kind::DIV: return os << "/";/////L2///????
+    case Token::Kind::MOD: return os << "%";/////L2///????
+    case Token::Kind::D_EQUAL: return os << "==";/////L2///????
     case Token::Kind::END: return os << "END";
     case Token::Kind::INT: return os << "INT";
     case Token::Kind::STRING: return os << "STRING";
@@ -197,9 +201,23 @@ const Token &Lexer::Next()
     case '}': return NextChar(), tk_ = Token::RBrace(loc);
     case ':': return NextChar(), tk_ = Token::Colon(loc);
     case ';': return NextChar(), tk_ = Token::Semi(loc);
-    case '=': return NextChar(), tk_ = Token::Equal(loc);
+
+    //case '=': return NextChar(), tk_ = Token::Equal(loc);//test for double equal
+    case '=': {
+     NextChar();
+     switch(chr_) {
+       case '=' : return NextChar(), tk_ = Token::DoubleEqual(loc);
+       default : return NextChar(), tk_ = Token::Equal(loc);///idk daca e corect
+     }
+    }//////L2////?????
     case '+': return NextChar(), tk_ = Token::Plus(loc);
     case '-': return NextChar(), tk_ = Token::Minus(loc);
+
+    case '*': return NextChar(), tk_ = Token::Multiplication(loc);/////L2///????
+    case '/': return NextChar(), tk_ = Token::Division(loc);/////L2///????
+    case '%': return NextChar(), tk_ = Token::Mod(loc);/////L2///????
+    
+
     case ',': return NextChar(), tk_ = Token::Comma(loc);
     case '"': {
       std::string word;

@@ -48,6 +48,10 @@ public:
     COMMA,
     PLUS,
     MINUS,
+    MUL,///L2//////////////??????
+    DIV,///L2//////////////?????
+    MOD,////L2////////////????
+    D_EQUAL,///L2/////////????
     // Complex tokens.
     INT,
     STRING,
@@ -106,8 +110,12 @@ public:
   static Token Colon(const Location &l) { return Token(l, Kind::COLON); }
   static Token Semi(const Location &l) { return Token(l, Kind::SEMI); }
   static Token Equal(const Location &l) { return Token(l, Kind::EQUAL); }
+  static Token DoubleEqual(const Location &l) { return Token(l, Kind::D_EQUAL); }//////L2/////?????
   static Token Plus(const Location &l) { return Token(l, Kind::PLUS); }
-  static Token Minus(const Location &l) { return Token(l, Kind::MINUS); }
+  static Token Minus(const Location &l) { return Token(l, Kind::MINUS); }///??????
+  static Token Division(const Location &l) { return Token(l, Kind::DIV); }//////L2/////?????
+  static Token Multiplication(const Location &l) { return Token(l, Kind::MUL); }///////L2//////????
+  static Token Mod(const Location &l) { return Token(l, Kind::MOD); }///////L2//////????
   static Token Comma(const Location &l) { return Token(l, Kind::COMMA); }
   static Token Func(const Location &l) { return Token(l, Kind::FUNC); }
   static Token Return(const Location &l) { return Token(l, Kind::RETURN); }
@@ -115,6 +123,7 @@ public:
   static Token Ident(const Location &l, const std::string &str);
   static Token String(const Location &l, const std::string &str);
   static Token Int(const Location &l, uint64_t i) ;///???????
+
 
   /// Print the token to a stream.
   void Print(std::ostream &os) const;

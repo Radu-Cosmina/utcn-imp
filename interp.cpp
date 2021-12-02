@@ -56,6 +56,9 @@ void Interp::Run()
       case Opcode::ADD: {
         auto rhs = PopInt();
         auto lhs = PopInt();
+        if(INT64_MAX - lhs < rhs){
+          throw RuntimeError("Cannot add integers, values too large");
+        }//????in case the given values exceed the int limit?
         Push(lhs + rhs);
         continue;
       }
@@ -63,6 +66,33 @@ void Interp::Run()
         auto rhs = PopInt();
         auto lhs = PopInt();
         Push(rhs - lhs);
+        continue;
+      }
+         case Opcode::MUL: {/////L2///?????
+        auto rhs = PopInt();
+        auto lhs = PopInt();
+        if(INT64_MAX / lhs < rhs){
+          throw RuntimeError("Cannot multiply integers, values too large");
+        }//same case as for addition
+        Push(rhs * lhs);
+        continue;
+      }
+         case Opcode::DIV: {/////L2///?????
+        auto rhs = PopInt();
+        auto lhs = PopInt();
+        Push(rhs / lhs);
+        continue;
+      }
+         case Opcode::MOD: {/////L2///?????
+        auto rhs = PopInt();
+        auto lhs = PopInt();
+        Push(rhs % lhs);
+        continue;
+      }
+         case Opcode::D_EQUAL: {/////L2///?????
+        auto rhs = PopInt();
+        auto lhs = PopInt();
+        Push((int64_t)(rhs == lhs));
         continue;
       }
       case Opcode::RET: {

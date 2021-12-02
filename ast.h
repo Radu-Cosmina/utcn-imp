@@ -102,7 +102,11 @@ public:
   /// Enumeration of binary operators.
   enum class Kind {
     ADD,
-    SUB
+    SUB,
+    MUL,////L2///???
+    DIV,////L2///???
+    MOD,/////L2////????
+    D_EQUAL////L2///???
   };
 
 public:
